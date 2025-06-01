@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BullyCheck</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header></header>
+
+    <section>
+        <form method="post">
+            <h1>Bully Check</h1>
+            <p>Alat untuk deteksi Bullying pada komentar YouTube</p>
+
+            <div class="flexing">
+                <input type="text" id="video_url" name="video_url" placeholder="Tempel tautan video di sini" required>
+                <button type="submit">Check</button>
+            </div>
+        </form>
+
+        <!-- Loading Bar -->
+        <div id="loading-bar" class="loading-container" style="display: none;">
+            <div class="loading-bar"></div>
+            <p>Memproses komentar...</p>
+        </div>
+
+        <!-- Pesan kesalahan -->
+        {% if message %}
+            <div class="error-message">
+                <p>{{ message }}</p>
+            </div>
+        {% endif %}
+
+        {% if total_comments > 0 %}
+            <!-- Ringkasan -->
+            <div class="summary-container">
+                <div class="summary-card total-comments">
+                    <p>{{ total_comments }}</p>
+                    <h3>Total Komentar</h3>
+                </div>
+                <div class="summary-card total-bullying">
+                    <p>{{ total_bullying }}</p>
+                    <h3>Bullying</h3>
+                </div>
+                <div class="summary-card total-non-bullying">
+                    <p>{{ total_non_bullying }}</p>
+                    <h3>Non-Bullying</h3>
+                </div>
+            </div>
+
+            <!-- Daftar komentar -->
+            <h2>Daftar Komentar</h2>
+            <div class="comment-list-scroll">
+                <ul>
+                    {% for i in range(total_comments) %}
+                    <li>
+                        <p>
+                            {% if predicted_categories[i] == 'Bullying' %}
+                                <span id="comment-{{ i }}" class="blurred-text">
+                                    {{ comments[i] }}
+                                </span>
+                                <span class="bullying-warning">
+                                    Komentar ini terdeteksi mengandung bullying.
+                                    <button class="toggle-comment" data-index="{{ i }}" data-action="show">
+                                        Tampilkan
+                                    </button>
+                                </span>
+                            {% else %}
+                                <span class="non-bullying">{{ comments[i] }}</span>
+                            {% endif %}
+                        </p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- Penjelasan -->
+        <p class="foot">
+            YouTube adalah situs berbagi video terpopuler di dunia yang memungkinkan pengguna untuk mengunggah video, melihat video, dan berbagi video. Akan tetapi, para pengguna sering kali menyampaikan emosinya dalam komentar yang terkadang mengarah ke perilaku cyberbullying. Dengan adanya sistem ini, Anda dapat mendeteksi bullying pada komentar YouTube.
+        </p>
+    </section>
+
+    <!-- Script menampilkan loading bar saat submit -->
+    <script>
+       document.querySelector('form').addEventListener('submit', function () {
+        const errorMessage = document.querySelector('.error-message');
+        const loadingBar = document.getElementById('loading-bar');
+
+        // Sembunyikan pesan error jika ada
+        if (errorMessage) {
+            errorMessage.style.display = 'none';
+        }
+
+        // Tampilkan loading bar
+        if (loadingBar) {
+            loadingBar.style.display = 'block';
+        }
+    });
+
+        window.addEventListener('DOMContentLoaded', function () {
+            const loading = document.getElementById('loading-bar');
+            if (loading) {
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                }, 4000); // Sesuaikan durasi animasi
+            }
+        });
+    </script>
+
+    <!-- Script toggle komentar bullying -->
+    <script>
+        document.querySelectorAll('.toggle-comment').forEach(button => {
+            button.addEventListener('click', function () {
+                const index = this.getAttribute('data-index');
+                const commentElement = document.getElementById(`comment-${index}`);
+                const action = this.getAttribute('data-action');
+
+                if (action === 'show') {
+                    commentElement.classList.add('visible');
+                    this.textContent = 'Sembunyikan';
+                    this.setAttribute('data-action', 'hide');
+                } else {
+                    commentElement.classList.remove('visible');
+                    this.textContent = 'Tampilkan';
+                    this.setAttribute('data-action', 'show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+/* Reset styles */
+body, h1, h2, form, label, input, button, ul, li {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: #4147B8;
+    text-align: center;
+    height: 370px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Styling for the body */
+body {
+    font-family: 'poppins', Helvetica, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+.error-message {
+    background-color: #ffe6e6;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.loading-container {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: normal;
+    color: #ffffff;
+}
+
+#loading-text {
+    display: none;
+    text-align: center;
+    color: #0000009d;
+    font-weight: normal;
+    font-size: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+section {
+    position: relative;
+    top: -320px;
+    z-index: 2;
+}
+
+/* Header styles */
+form h1 {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    color: #4958DA;
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+form p {
+    text-align: center;
+    font-size: 16px;
+    font-weight: lighter;
+    color: #9c9c9c;
+    margin-top: 0;
+}
+
+/* Form styles */
+form {
+    max-width: 700px;
+    margin: 20px auto 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.flexing {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+/* Input field styles */
+input[type="text"] {
+    width: 100%;
+    padding: 15px 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 28px;
+    font-size: 16px;
+}
+
+/* Button styles */
+button {
+    background-color: #4958DA;
+    color: white;
+    border: none;
+    padding: 15px 50px;
+    border-radius: 28px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 10px 0;
+}
+
+button:hover {
+    background-color: #383fbb;
+}
+
+#processing-message {
+    display: none;
+    text-align: center;
+    color: #0000009d;
+    font-weight: 400;
+    font-size: 24px;
+    position: absolute;
+    top: 87%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.summary-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px auto;
+    max-width: 700px;
+    gap: 15px;
+}
+
+.summary-card {
+    background-color: white;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    line-height: 0.5;
+}
+
+.summary-card h3 {
+    color: #777777;
+    font-size: 18px;
+    font-weight: lighter;
+}
+
+.summary-card p {
+    font-size: 32px;
+    font-weight: bolder;
+    color: rgb(71, 71, 71);
+}
+
+.total-comments {
+    border-bottom: 5px solid rgba(110, 113, 158, 0.65);
+}
+
+.total-bullying {
+    border-bottom: 5px solid rgba(219, 87, 87, 0.65);
+}
+
+.total-non-bullying {
+    border-bottom: 5px solid rgba(69, 163, 69, 0.65);
+}
+
+/* Comments Section Styling */
+ul {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 0;
+    list-style-type: none;
+}
+
+ul li {
+    background-color: white;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+}
+
+ul li:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+ul li::before {
+    content: "💬";
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+ul li span {
+    margin-left: 10px;
+}
+
+ul li p {
+    margin: 0;
+    flex-grow: 1;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+h2 {
+    text-align: center;
+    color: #777777;
+    margin: 30px;
+    font-weight: normal;
+    font-size: 24px;
+}
+
+/* Styles for predicted categories */
+.bullying {
+    background-color: red;
+    color: white;
+    padding: 3px 15px;
+    border-radius: 20px;
+    white-space: nowrap;
+    min-width: 100px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.non-bullying {
+    display: inline-block;
+    border-radius: 20px;
+    min-width: 100px;
+    text-align: left;
+    flex-shrink: 0;
+}
+
+.foot {
+    max-width: 1050px;
+    margin: 20px auto;
+    text-align: center;
+    position: relative;
+    bottom: -160px;
+    z-index: 2;
+    color: #00000075;
+    border: 1px solid #77777776;
+    border-radius: 30px;
+    padding: 30px;
+    font-weight: 100;
+}
+
+.bullying-warning {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+}
+
+.bullying-warning button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    background-color: #721c24;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.bullying-warning button:hover {
+    background-color: #a94442;
+}
+
+.blurred-text {
+    color: transparent;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-color: #f5f5f5;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 8px;
+    text-align: left;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.blurred-text.visible {
+    color: inherit;
+    text-shadow: none;
+    background-color: transparent;
+    cursor: default;
+}
+
+.comment-list-scroll {
+    max-height: 600px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 15px auto;
+    background-color: #f4f4f9;
+    border-radius: 8px;
+    width: 87%;
+    max-width: 800px;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    form, ul {
+        padding: 15px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    ul li {
+        padding: 10px;
+    }
+}
