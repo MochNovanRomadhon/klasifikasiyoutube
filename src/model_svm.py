@@ -1,6 +1,3 @@
-import warnings
-warnings.filterwarnings("ignore", category=FutureWarning)
-
 import os
 import joblib
 import pandas as pd
@@ -14,7 +11,7 @@ def train_svm(X_train, y_train):
     model.fit(X_train, y_train)
     return model
 
-def evaluate_model(model, X_test, y_test, original_df_test):
+def evaluate_model(model, X_test, y_test):
     print("\nMengevaluasi model...")
     y_pred = model.predict(X_test)
     cm = confusion_matrix(y_test, y_pred)
@@ -41,27 +38,29 @@ if __name__ == "__main__":
     print("Memulai proses pemodelan...\n")
 
     current_dir = os.path.dirname(__file__)
-    tfidf_data_path = os.path.join(current_dir, '..', 'data', 'processed_tfidf.pkl')
-    model_path = os.path.join(current_dir, '..', 'models', 'svm_model.pkl')
+    tfidf_csv_path = os.path.join(current_dir, '..', 'data', 'processed_tfidf.csv')
     original_data_path = os.path.join(current_dir, '..', 'data', 'combined_cyberbullying.csv')
+    model_path = os.path.join(current_dir, '..', 'models', 'svm_model.pkl')
 
-    X, y = joblib.load(tfidf_data_path)
-
+    # Load data
+    X = pd.read_csv(tfidf_csv_path)
     original_df = pd.read_csv(original_data_path)
-    original_df = original_df.loc[y.index].reset_index(drop=True)
-    y = y.reset_index(drop=True)
+
+    if 'Kategori' not in original_df.columns:
+        raise ValueError("Kolom 'Kategori' tidak ditemukan dalam data asli!")
+
+    y = original_df['Kategori'].fillna('').reset_index(drop=True)
     original_df = original_df.reset_index(drop=True)
+    X = X.reset_index(drop=True)
 
-    train_idx, test_idx = train_test_split(y.index, test_size=0.2, stratify=y, random_state=42)
+    # Split data
+    X_train, X_test, y_train, y_test, original_df_train, original_df_test = train_test_split(
+        X, y, original_df, test_size=0.2, stratify=y, random_state=42
+    )
 
-    X_train, X_test = X[train_idx], X[test_idx]
-    y_train, y_test = y[train_idx], y[test_idx]
-
-    original_df_test = original_df.iloc[test_idx].reset_index(drop=True)
-    y_test = y_test.reset_index(drop=True)
-
+    # Train, evaluate, save
     model = train_svm(X_train, y_train)
-    evaluate_model(model, X_test, y_test, original_df_test)
+    evaluate_model(model, X_test, y_test)
     save_model(model, model_path)
 
     print("Proses selesai!")

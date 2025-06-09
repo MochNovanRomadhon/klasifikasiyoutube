@@ -6,8 +6,7 @@ from dotenv import load_dotenv
 import joblib
 import pandas as pd
 
-# Load preprocessing pipeline
-from prepro import TextPreprocessor  # pastikan prepro.py berada di folder yang sama dengan app atau di sys.path
+from prepro import preprocess_text 
 
 load_dotenv()
 
@@ -118,28 +117,27 @@ def index():
 
             try:
                 base_dir = os.path.abspath(os.path.dirname(__file__))
-                preprocess_pipeline_path = os.path.join(base_dir, '..', 'models', 'preprocess_pipeline.pkl')
                 vectorizer_file_path = os.path.join(base_dir, '..', 'models', 'tfidf_vectorizer.pkl')
                 model_file_path = os.path.join(base_dir, '..', 'models', 'svm_model.pkl')
 
-                if not all(os.path.isfile(path) for path in [model_file_path, vectorizer_file_path, preprocess_pipeline_path]):
-                    message = "Model atau pipeline belum tersedia."
+                if not all(os.path.isfile(path) for path in [model_file_path, vectorizer_file_path]):
+                    message = "Model atau vectorizer belum tersedia."
                     return render_template('index.html', comments=comments, total_comments=total_comments,
                                            total_bullying=0, total_non_bullying=0,
                                            predicted_categories=[], comment_results=[],
                                            message=message)
 
-                preprocess_pipeline = joblib.load(preprocess_pipeline_path)
                 tfidf_vectorizer = joblib.load(vectorizer_file_path)
                 model = joblib.load(model_file_path)
 
-                preprocessed_comments = preprocess_pipeline.transform(pd.Series(comments))
-                processed_comments = tfidf_vectorizer.transform(preprocessed_comments)
+                preprocessed_comments = [preprocess_text(comment) for comment in comments]
+                processed_comments = tfidf_vectorizer.transform(preprocessed_comments).toarray()
 
                 if processed_comments.shape[0] == 0:
                     raise ValueError("Hasil TF-IDF kosong. Periksa kembali proses preprocessing atau vectorizer.")
 
                 predicted_categories = model.predict(processed_comments)
+
 
                 total_bullying = (predicted_categories == 'Bullying').sum()
                 total_non_bullying = total_comments - total_bullying
