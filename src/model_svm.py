@@ -57,8 +57,6 @@ if __name__ == "__main__":
     X_train, X_test, y_train, y_test, original_df_train, original_df_test = train_test_split(
         X, y, original_df, test_size=0.2, stratify=y, random_state=42
     )
-
-    # Train, evaluate, save
     model = train_svm(X_train, y_train)
     evaluate_model(model, X_test, y_test)
     save_model(model, model_path)
